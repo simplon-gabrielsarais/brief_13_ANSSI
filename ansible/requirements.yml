@@ -1,0 +1,5 @@
+---    
+- src: https://github.com/simplon-gabrielsarais/brief_13_GS_role-ansible
+  scm: git
+  name: anssi
+  version: main

@@ -1,0 +1,27 @@
+---
+- name: recomendation ANSSI
+  hosts: VMGS
+  remote_user: gabriel
+  become: true
+  gather_facts: true
+  pre_tasks:
+    - name: install scap-workbench
+      yum:
+        name:
+          - scap-workbench
+        state: present
+  
+  roles: 
+    - role: "anssi"
+      ignore_errors: true
+  tasks:
+    - name: cmd line report
+      ansible.builtin.command:
+        cmd: oscap xccdf eval --profile xccdf_org.ssgproject.content_profile_anssi_bp28_minimal --results-arf results.xml --report report.html /usr/share/xml/scap/ssg/content/ssg-rhel8-ds.xml
+      ignore_errors: true
+
+    - name: Save audit report
+      fetch:
+        src: ~/report.html
+        dest: ~/Documents/report.html
+        flat: yes
